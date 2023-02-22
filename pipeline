@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+    environment{
+        MEM_XMX = '-Xmx 1g'
+        MEM_XMS = '-Xmx 512m'
+    }
+    parameters{
+        choice(name: 'DEPLOY', choices: ['OUI', 'NON'], description: 'Deploiement apres compilation')
+    }
+    stages {
+        stage('Build') {
+            steps {
+                echo "Build avec config :"
+                echo "xms = ${MEM_XMS}  xmx  = ${MEM_XMX}"
+                sh """
+                mvn package
+                java -jar netflix-1.0.0.jar  ../netflix_titles.csv"
+                """
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Test...'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo "Deploy... : ${params.DEPLOY}"
+            }
+        }
+    }
+}

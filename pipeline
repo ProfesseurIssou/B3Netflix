@@ -8,13 +8,21 @@ pipeline {
         choice(name: 'DEPLOY', choices: ['OUI', 'NON'], description: 'Deploiement apres compilation')
     }
     stages {
+        stage("Recuperation des sources"){
+            steps{
+               git url:'https://github.com/ProfesseurIssou/B3Netflix.git', branch:"main"
+            }
+        }
+
         stage('Build') {
             steps {
                 echo "Build avec config :"
                 echo "xms = ${MEM_XMS}  xmx  = ${MEM_XMX}"
-                sh """
+                bat """
                 mvn package
-                java -jar netflix-1.0.0.jar  ../netflix_titles.csv"
+                """
+                bat """
+                java -jar target/netflix-1.0.0.jar netflix_titles.csv"
                 """
             }
         }

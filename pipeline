@@ -22,7 +22,7 @@ pipeline {
                 mvn package
                 """
                 bat """
-                java -jar target/netflix-1.0.0.jar netflix_titles.csv"
+                java -jar target/netflix-1.0.0.jar netflix_titles.csv
                 """
             }
         }
